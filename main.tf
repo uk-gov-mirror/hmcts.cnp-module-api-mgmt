@@ -10,7 +10,7 @@ resource "azurerm_subnet" "api-mgmt-subnet" {
   address_prefixes     = ["${cidrsubnet(var.source_range, 4, 4)}"]
 
   lifecycle {
-    ignore_changes = [address_prefix]
+    ignore_changes = [address_prefixes]
   }
 }
 
@@ -39,7 +39,7 @@ resource "azurerm_api_management" "api-managment" {
 resource "azurerm_api_management_custom_domain" "api-management-custom-domain" {
   api_management_id = azurerm_api_management.api-managment.id
 
-  proxy {
+  gateway {
     host_name                    = join("", [azurerm_api_management.api-managment.name, ".azure-api.net"])
     negotiate_client_certificate = true
   }
